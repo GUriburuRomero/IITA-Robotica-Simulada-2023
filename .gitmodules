@@ -1,3 +1,6 @@
 [submodule "Estudiantes/Entorno-Erebus"]
 	path = Estudiantes/Entorno-Erebus
 	url = https://github.com/GUriburuRomero/Entorno-Erebus.git
+[submodule "Simulador_Erebus"]
+	path = Simulador_Erebus
+	url = https://github.com/GUriburuRomero/Simulador_Erebus.git
