@@ -1,22 +1,24 @@
-from controller import Robot, GPS
+from controller import Robot, GPS 
 
-timeStep = 32 
-tilesize = 0.065
+tilesize = 0.05 
+robot = Robot() 
+timeStep = int(robot.getBasicTimeStep()) 
 
-robot = Robot()
+gps = robot.getDevice("gps") 
+gps.enable(timeStep) 
 
-gps = robot.getDevice("gps")
-gps.enable(timeStep)
+wheel1 = robot.getDevice("wheel1 motor") 
+wheel2 = robot.getDevice("wheel2 motor") 
 
-wheel1 = robot.getDevice("wheel1 motor")
-wheel2 = robot.getDevice("wheel2 motor")
+start = robot.getTime() 
+robot.step(timeStep) 
 
-start = robot.getTime()
+sy = gps.getValues()[0]/tilesize 
+sx = gps.getValues()[0]/tilesize 
 
-while robot.step(timeStep) != -1:
+while robot.step(timeStep) != -1: 
+    
+    y = round(gps.getValues()[0]/tilesize - sy, 1) 
+    x = round(gps.getValues()[2]/tilesize - sx, 1) 
 
-    x = round(gps.getValues()[0]/tilesize)
-    y = round(gps.getValues()[1]/tilesize)
-    z = round(gps.getValues()[2]/tilesize)
-
-    print(f'x: {x}, y: {y}, z: {z}')
+    print(f'x: {x}, y: {y}')
