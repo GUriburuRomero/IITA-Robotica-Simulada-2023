@@ -10,6 +10,9 @@ gps.enable(timeStep)
 wheel1 = robot.getDevice("wheel1 motor") 
 wheel2 = robot.getDevice("wheel2 motor") 
 
+wheel1.setPosition(float('inf'))
+wheel2.setPosition(float('inf'))
+
 start = robot.getTime() 
 robot.step(timeStep) 
 
