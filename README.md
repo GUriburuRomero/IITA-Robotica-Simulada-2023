@@ -1,4 +1,4 @@
-﻿# Instrucciones iniciales
+﻿# Instrucciones
 
 - Instrucciones de instalación
 
