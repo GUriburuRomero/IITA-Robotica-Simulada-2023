@@ -36,6 +36,7 @@ while robot.step(timeStep) != -1:
 
     wheel_left.setVelocity(1)     #Step 3
     wheel_right.setVelocity(1)
+    
     if x == 1.4 and y == 0:
         wheel_left.setVelocity(0)     
         wheel_right.setVelocity(0)
