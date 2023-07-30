@@ -1,39 +1,47 @@
 from controller import Robot, Motor, PositionSensor
-
-robot = Robot()
-
-timeStep = 32
-
-noventaGrados = 2.5
-
-coGrados = 4.75
+import math
 
 tilesize = 0.06
-estado = "Girar"
+state = 'rotar'
+noventaGrados = 2.25 # 2.31 con timeStep = 32
 
-ruedaIzquierda = robot.getDevice("wheel1 motor")
-ruedaDerecha = robot.getDevice("wheel2 motor")
+robot = Robot()
+timeStep = int(robot.getBasicTimeStep())
+angulo_actual = 0
 
-ruedaIzquierda.setPosition(float('inf'))
-ruedaDerecha.setPosition(float('inf'))
+wheel_left = robot.getDevice('wheel2 motor')
+wheel_right = robot.getDevice('wheel1 motor')
 
-leftEnc = ruedaIzquierda.getPositionSensor()    
-rightEnc = ruedaDerecha.getPositionSensor()
+wheel_left.setPosition(float(noventaGrados))
+wheel_right.setPosition(float('inf'))
 
-leftEnc.enable(timeStep)
-rightEnc.enable(timeStep)
+l_enc = wheel_left.getPositionSensor()
+r_enc = wheel_right.getPositionSensor()
 
-robot.step(timeStep)
+l_enc.enable(timeStep)
+r_enc.enable(timeStep)
+
+def w_velocity(vel):
+    ''' Permite avanzar hacia adelante al robot '''
+    wheel_left.setVelocity(vel)
+    wheel_right.setVelocity(vel)
 
 def turn(vel):
-    'Gira el robot sobre su propio eje'
-    ruedaIzquierda.setVelocity(vel)
-    ruedaDerecha.setVelocity(-vel)
+    ''' Permite rotar sobre su eje al robot'''
+    wheel_left.setVelocity(-vel)
+    wheel_right.setVelocity(vel)
 
-while robot.step(timeStep) != -1: 
-    if estado == 'Girar':
-        turn(0.2)
-        print("Diferencia del encoder:", leftEnc.getValue() - noventaGrados)
+while robot.step(timeStep) != -1:
+    
+    if state == 'rotar':
+        wheel_left.setPosition(float(noventaGrados)) # Para girar al otro lado: 1. posicionar la otra rueda en noventaGrados
+        turn(-0.2) # 2. cambiar el signo de la constante -0.2 (la velocidad)
 
-        if(abs(leftEnc.getValue() - noventaGrados > 0.01) and estado == "Girar"):
-            turn(0)
+        print(f'Diferencia del encoder: {abs(l_enc.getValue()-noventaGrados)}')
+
+        if (abs(l_enc.getValue() - noventaGrados)) <= 0.01: # 3. Realizar la operación con el otro encoder
+            wheel_left.setPosition(float('inf'))
+            turn(0.0)
+            print("¡He terminado!")
+            break
+
