@@ -1,38 +1,41 @@
-from controller import Robot
+
+from controller import Robot, Motor
 import math
 
-tilesize = 0.05 
-robot = Robot() 
-timeStep = int(robot.getBasicTimeStep()) 
+tilesize = 0.06
+state = 'rotar'
 
+robot = Robot()
+timeStep = int(robot.getBasicTimeStep())
 angulo_actual = 0
 
-estado = "rotar"
+wheel_left = robot.getDevice('wheel2 motor')
+wheel_right = robot.getDevice('wheel1 motor')
 
-wheel1 = robot.getDevice("wheel1 motor") 
-wheel2 = robot.getDevice("wheel2 motor") 
-
-wheel1.setPosition(float('inf'))
-wheel2.setPosition(float('inf'))
+wheel_left.setPosition(float('inf'))
+wheel_right.setPosition(float('inf'))
 
 gyro = robot.getDevice('gyro')
 gyro.enable(timeStep)
 
-def avanzar(vel):
-    wheel1.setVelocity(vel)
-    wheel2.setVelocity(vel)
+def w_velocity(vel):
+    ''' Función para que el robot avance'''
+    wheel_left.setVelocity(vel)
+    wheel_right.setVelocity(vel)
 
-def girar(vel):
-    wheel1.setVelocity(-vel)
-    wheel2.setVelocity(vel)
+def turn(vel):
+    ''' Función para la rotación del robot'''
+    wheel_left.setVelocity(vel)
+    wheel_right.setVelocity(-vel)
 
-def rotar(angulo):
+def turn_gyro(angle, velTurn):
+    ''' Función para rotar la cantidad de grados que indiquemos'''
     global angulo_actual
     tiempo_anterior = 0
 
-    girar(0.5)
-    # Mientras no llego al angulo solicitado sigo girando con una precision de 1 grado
-    while ( abs(angulo - angulo_actual) > 1):
+    turn(velTurn)
+
+    while ( abs(angle - angulo_actual) > 1):
 
         tiempo_actual = robot.getTime()
         tiempo_transcurrido = tiempo_actual - tiempo_anterior 
@@ -40,13 +43,11 @@ def rotar(angulo):
         radsIntimestep = abs(gyro.getValues()[1]) * tiempo_transcurrido
         degsIntimestep = radsIntimestep * 180 / math.pi 
 
-        print(f"rads: {radsIntimestep:.3f} | degs: {degsIntimestep:.3f}")
+        print(f"degs: {degsIntimestep:.3f}")
 
         angulo_actual += degsIntimestep
-
-        # Si se pasa de 360 grados se ajusta la rotacion empezando desde 0 grados
         angulo_actual = angulo_actual % 360
-        # Si es mas bajo que 0 grados, le resta ese valor a 360
+
         if angulo_actual < 0:
             angulo_actual += 360
 
@@ -54,13 +55,13 @@ def rotar(angulo):
         robot.step(timeStep)
 
     print("Rotacion finalizada.")
-    avanzar(0)
+    angulo_actual = 0
+    w_velocity(0)
     return True
 
-while robot.step(timeStep) != -1: 
-    if estado == 'rotar':
-        rotar(180)
-        estado = 'avanzar'
-
-    elif estado == 'avanzar':
-        avanzar(0.4)
+while robot.step(timeStep) != -1:
+    
+    if state == 'rotar':
+        turn_gyro(90, 0.5) # Cambiar el signo del segundo parámetro para cambiar de dirección
+        w_velocity(0.0)
+        break
