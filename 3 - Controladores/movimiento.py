@@ -42,6 +42,11 @@ Camera1.enable(timeStep)
 Camera2.enable(timeStep)
 
 #Funciones:
+def delay(ms):
+    initTime = robot.getTime()
+    while robot.step(timeStep) != -1:
+        if (robot.getTime() - initTime) * 1000.0 > ms:
+            break
 
 def w_velocity(vel):
     ''' Función para que el robot avance'''
@@ -57,6 +62,8 @@ def turn_gyro(angle, velTurn):
     ''' Función para rotar la cantidad de grados que indiquemos'''
     global angulo_actual
     tiempo_anterior = 0
+
+
 
     turn(velTurn)
     while ( abs(angle - angulo_actual) > 1):
@@ -86,14 +93,16 @@ def turn_gyro(angle, velTurn):
 def colourDetector(r, g, b):
     ''' Función para detectar el color en tiempo real '''
     color = "s/n"
-    if (180 <= r <= 190) and (145 <= g <= 155) and (80 <= b <= 90):
-        color = "Swamp"
-    elif (65 <= r <= 70) and (70 <= g <= 80) and (89 <= b <=93):
+    if (180 <= r <= 202) and (150 <= g <= 170) and (80 <= b <= 97):
+        color = "swamp"
+        print("Se detecto un pantano")
+    elif (100<= r <= 104) and (102 <= g <= 108) and (114 <= b <=118):
         color = "Checkpoint"
-    elif (r and g and b) <= 35:
-        color = "Hole"
+        print("Se detecto un Checkpoint")
+    elif 30 <= (r and g and b) <= 38:
+        color = "hole"
+        print("Se detecto un Hole")
     return color  
-
 start = robot.getTime() #Preguntar al profe que es
 robot.step(timeStep) 
 
@@ -157,26 +166,3 @@ while robot.step(timeStep) != -1:
         w_velocity(0.0)
         print("Girando a la derecha")
         state = "avanzar"
-
-#avanzar:
-#    si el sensor de distancia1 <= pared or sensor de color == pantano o pozo:
-#       si el sensor de distancia de la derecha <= pared
-#            si el sensor de distancia de la izquierda <= pared:
-#                rotar 180 grados
-#            sino el sensor de distancia de la izquierda > pared:
-#                rotar a la izquierda
-#        sino el sensor de distancia de la derecha > pared:
-#            rotar a la derecha
-#        estado rotar
-#    si el sensor de distancia1 <= pared or sensor de color == pantano o pozo:
-#        avanzar adelante
-    
-#rotar 180 grados:
-#    rota 180 grados
-#    vuelve  estado avanzar
-#rotar derecha:
-#    rota a la derecha
-#    vuelve  estado avanzar
-#rotar izquierda:
-#    rota izquierda
-#    vuelve  estado avanzar
