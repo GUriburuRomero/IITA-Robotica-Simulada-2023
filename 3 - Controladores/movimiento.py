@@ -95,13 +95,13 @@ def colourDetector(r, g, b):
     color = "s/n"
     if (180 <= r <= 202) and (150 <= g <= 170) and (80 <= b <= 97):
         color = "swamp"
-        print("Se detecto un pantano")
+        print("Se detecto un swamp")
     elif (100<= r <= 104) and (102 <= g <= 108) and (114 <= b <=118):
-        color = "Checkpoint"
-        print("Se detecto un Checkpoint")
+        color = "checkpoint"
+        print("Se detecto un checkpoint")
     elif 30 <= (r and g and b) <= 38:
         color = "hole"
-        print("Se detecto un Hole")
+        print("Se detecto un hole")
     return color  
 start = robot.getTime() #Preguntar al profe que es
 robot.step(timeStep) 
@@ -118,13 +118,13 @@ while robot.step(timeStep) != -1:
     print(f'x: {x}, y: {y}')
 
     distancia1 = distanceSensor1.getValue()
-    print(f'La distancia1 es de {distancia1:.3f} metros')
+    print(f'La distancia1 o sensor de la derecha es de {distancia1:.3f} metros')
 
     distancia2 = distanceSensor2.getValue()
-    print(f'La distancia2 es de {distancia2:.3f} metros')
+    print(f'La distancia2 o sensor de la izquierda es de {distancia2:.3f} metros')
 
     distancia3 = distanceSensor3.getValue()
-    print(f'La distancia3 es de {distancia3:.3f} metros')
+    print(f'La distancia3 o sensor de adelante es de {distancia3:.3f} metros')
 
 
     image = color.getImage()
@@ -137,13 +137,13 @@ while robot.step(timeStep) != -1:
     print(f'Rojo: {r}, Verde: {g}, Azul: {b}')
 
     if state == "avanzar":
-        if distanceSensor3.getValue() <= 0.056 or colorsensor == "swamp" or colorsensor == "hole":
-            if distanceSensor1.getValue() <= 0.056:
-                if distanceSensor2.getValue() <= 0.056:
+        if distanceSensor3.getValue() <= 0.058 or colorsensor == "swamp" or colorsensor == "hole":
+            if distanceSensor1.getValue() <= 0.058:
+                if distanceSensor2.getValue() <= 0.058:
                     state = "rotar_180_grados"
-                elif distanceSensor2.getValue() > 0.056:
+                elif distanceSensor2.getValue() > 0.058:
                     state = "rotar_a_la_derecha"
-            elif distanceSensor1.getValue() > 0.056:
+            elif distanceSensor1.getValue() > 0.058:
                 state = "rotar_a_la_izquierda"
         else:
             wheel_left.setVelocity(1.0)     
