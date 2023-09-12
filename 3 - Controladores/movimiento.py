@@ -142,9 +142,9 @@ while robot.step(timeStep) != -1:
                 if distanceSensor2.getValue() <= 0.058:
                     state = "rotar_180_grados"
                 elif distanceSensor2.getValue() > 0.058:
-                    state = "rotar_a_la_derecha"
+                    state = "rotar_a_la_izquierda"
             elif distanceSensor1.getValue() > 0.058:
-                state = "rotar_a_la_izquierda"
+                state = "rotar_a_la_derecha"
         else:
             wheel_left.setVelocity(1.0)     
             wheel_right.setVelocity(1.0)
@@ -156,13 +156,13 @@ while robot.step(timeStep) != -1:
         state = "avanzar"
 
     if state == "rotar_a_la_izquierda":
-        turn_gyro(90, -0.5) 
+        turn_gyro(90, 0.5) 
         w_velocity(0.0)
         print("Girando a la izquierda")
         state = "avanzar"
 
     if state == "rotar_a_la_derecha":
-        turn_gyro(90, 0.5) 
+        turn_gyro(90, -0.5) 
         w_velocity(0.0)
         print("Girando a la derecha")
         state = "avanzar"
