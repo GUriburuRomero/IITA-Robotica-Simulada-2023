@@ -212,7 +212,7 @@ while robot.step(timeStep) != -1:
 
     if state == "reconocimiento de Ybaldosa":
         print("estoy en el estado reconocimiento de Ybaldosa")
-        calibracion_inicial = "inicio en Y"
+        calibracion_inicial = "inicio en "
         futuro_encoder_right = encoder_right + 5.9974
         futuro_encoder_left = encoder_left + 5.9974
         state = "avanzarY"
